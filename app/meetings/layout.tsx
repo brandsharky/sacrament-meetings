@@ -8,7 +8,7 @@ export default function MeetingsLayout({ children, }: Readonly<{ children: React
 
   return (
     <div>
-      <nav aria-label="Meetings navigation" className="mb-8 flex gap-6 border-b pb-4">
+      <nav aria-label="Meetings navigation" className="mb-8 flex gap-6 border-b pb-4 print:hidden">
         <Link href="/meetings" className={pathname === '/meetings' ? 'font-bold underline' : 'hover:underline'} aria-current={pathname === '/meetings' ? 'page' : undefined}>
           All Meetings
         </Link>

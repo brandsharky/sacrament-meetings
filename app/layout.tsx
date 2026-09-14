@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en">
-      <body className='${openSans.className} flex min-h-screen flex-col bg-gray-50 text-gray-900'>
+      <body className={`${openSans.className} flex min-h-screen flex-col bg-gray-50 text-gray-900`}>
         <Header />
 
         <NavLinks />

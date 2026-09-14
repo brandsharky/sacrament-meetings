@@ -17,9 +17,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailProps) {
 
         <p className="mt-1 capitalize text-black-600 text-black">{meeting.meetingType} meeting</p>
 
-        <div className="mt-4">
-          <PrintButton />
-        </div>
+        <PrintButton />
       </header>
 
       <section>

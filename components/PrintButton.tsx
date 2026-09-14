@@ -7,7 +7,7 @@ export default function PrintButton() {
       onClick={() => {
         window.print()
       }}
-      className="rounded-md bg-black px-4 py-2 font-semibold text-white hover:bg-gray-800"
+      className="rounded-md bg-black px-4 py-2 font-semibold text-white hover:bg-gray-800 print:hidden"
     >
       Print Program
     </button>
