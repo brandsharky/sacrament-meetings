@@ -5,7 +5,12 @@ import type { SacramentMeeting } from '@/lib/types';
 
 
 export default async function MeetingsPage() {
-  const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
+  // const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
+  const baseUrl =
+  process.env.SITE_URL ??
+  (process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:3000');
 
   const response = await fetch(`${baseUrl}/api/meetings`, {
     cache: 'no-store',
