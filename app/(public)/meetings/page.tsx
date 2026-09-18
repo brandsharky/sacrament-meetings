@@ -1,26 +1,18 @@
 import Image from 'next/image';
 import MeetingCard from '@/components/MeetingCard';
-import type { SacramentMeeting } from '@/lib/types';
+import { getMeetings, getMeetingsTotalPages } from '@/lib/meetings-db';
+import MeetingSearch from '@/components/MeetingSearch';
+import Pagination from '@/components/Pagination';
 
 
 
-export default async function MeetingsPage() {
-  // const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
-  const baseUrl =
-  process.env.SITE_URL ??
-  (process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000');
-
-  const response = await fetch(`${baseUrl}/api/meetings`, {
-    cache: 'no-store',
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch meetings.');
-  }
-
-  const meetings: SacramentMeeting[] = await response.json();
+export default async function MeetingsPage({searchParams,}: {searchParams: Promise<{query?: string;page?: string;}>;}) {
+  const { query = '', page = '1' } = await searchParams;
+  const currentPage = Number(page);
+  const [meetings, totalPages] = await Promise.all([
+    getMeetings(query, currentPage),
+    getMeetingsTotalPages(query),
+  ]);
 
   return (
     <section>
@@ -30,11 +22,15 @@ export default async function MeetingsPage() {
 
       <p className="mt-2 text-gray-600">View past and current sacrament meeting programs.</p>
 
+      <MeetingSearch />
+
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         {meetings.map((meeting) => (
           <MeetingCard key={meeting.id} meeting={meeting} />
         ))}
       </div>
+
+      <Pagination totalPages={totalPages} currentPage={currentPage} />
     </section>
   );
 }
