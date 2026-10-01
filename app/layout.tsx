@@ -14,8 +14,12 @@ const openSans = Open_Sans({
 
 
 export const metadata: Metadata = {
-  title: 'Sacrament Meeting Planner',
-  description: 'View and manage sacrament meeting programs.',
+  title: {
+    default: 'Sacrament Meeting Planner',
+    template: '%s | Sacrament Meeting Planner',
+  },
+  description:
+    'Plan, manage, and review sacrament meeting agendas.',
 };
 
 

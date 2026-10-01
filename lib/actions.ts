@@ -3,6 +3,8 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { signIn, signOut } from '@/auth';
+import { AuthError } from 'next-auth';
 
 import {
   addMeeting,
@@ -57,6 +59,31 @@ const MeetingFormSchema = z.object({
   closingHymnTitle: z.string().min(1, 'Closing hymn title is required.'),
   closingPrayer: z.string().min(1, 'Closing prayer is required.'),
 });
+
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid email or password.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+
+    throw error;
+  }
+}
+
+export async function signOutAction() {
+  await signOut();
+}
 
 
 

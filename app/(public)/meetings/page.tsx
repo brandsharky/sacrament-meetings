@@ -3,7 +3,14 @@ import MeetingCard from '@/components/MeetingCard';
 import { getMeetings, getMeetingsTotalPages } from '@/lib/meetings-db';
 import MeetingSearch from '@/components/MeetingSearch';
 import Pagination from '@/components/Pagination';
+import type { Metadata } from 'next';
 
+
+
+export const metadata: Metadata = {
+  title: 'Meetings',
+  description: 'View sacrament meeting programs and review upcoming and past meetings.',
+};
 
 
 export default async function MeetingsPage({searchParams,}: {searchParams: Promise<{query?: string;page?: string;}>;}) {
@@ -16,7 +23,7 @@ export default async function MeetingsPage({searchParams,}: {searchParams: Promi
 
   return (
     <section>
-      <Image src="/lost_lamb.jpeg" alt="Jesus Christ and the Lost Lamb" width={374} height={500} className="mb-8 h-auto w-full rounded-lg object-cover" />
+      <Image src="/gathering.jpeg" alt="Jesus Christ and His Apostles" width={374} height={500} className="mb-8 h-auto w-full rounded-lg object-cover" />
 
       <h1 className="text-3xl font-bold">Sacrament Meetings</h1>
 
