@@ -1,13 +1,21 @@
 'use client';
 
+import Link from 'next/link';
 import { useActionState } from 'react';
 import { createMeeting, type State } from '@/lib/actions';
+import {
+  Field,
+  FieldErrors,
+  FormSection,
+  inputStyles,
+} from '@/components/FormParts';
+
+
 
 const initialState: State = {
   message: null,
   errors: {},
 };
-
 
 
 export default function CreateMeetingForm() {
@@ -17,422 +25,259 @@ export default function CreateMeetingForm() {
   );
 
   return (
-    <form action={formAction} className="mt-6 space-y-6">
-      {/* Date */}
-      <div>
-        <label htmlFor="date" className="block font-medium">
-          Date
-        </label>
+    <form action={formAction} className="mt-8 space-y-6">
+      <FormSection title="Meeting Details">
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field id="date" label="Date" errors={state.errors?.date}>
+            <input
+              id="date"
+              name="date"
+              type="date"
+              required
+              aria-describedby="date-error"
+              className={inputStyles}
+            />
+          </Field>
 
-        <input
-          id="date"
-          name="date"
-          type="date"
-          required
-          aria-describedby="date-error"
-          className="mt-1 w-full rounded border p-2"
-        />
-
-        <div id="date-error" aria-live="polite">
-          {state.errors?.date?.map((error) => (
-            <p key={error} className="mt-1 text-sm text-red-600">
-              {error}
-            </p>
-          ))}
+          <Field id="meetingType" label="Meeting Type" errors={state.errors?.meetingType}>
+            <select
+              id="meetingType"
+              name="meetingType"
+              required
+              aria-describedby="meetingType-error"
+              className={inputStyles}
+            >
+              <option value="">Select a meeting type</option>
+              <option value="testimony">Testimony</option>
+              <option value="regular">Regular</option>
+              <option value="stake">Stake</option>
+              <option value="general">General</option>
+            </select>
+          </Field>
         </div>
-      </div>
 
-      {/* Meeting Type */}
-      <div>
-        <label htmlFor="meetingType" className="block font-medium">
-          Meeting Type
-        </label>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field id="presiding" label="Presiding" errors={state.errors?.presiding}>
+            <input
+              id="presiding"
+              name="presiding"
+              type="text"
+              required
+              aria-describedby="presiding-error"
+              className={inputStyles}
+            />
+          </Field>
 
-        <select
-          id="meetingType"
-          name="meetingType"
-          required
-          aria-describedby="meetingType-error"
-          className="mt-1 w-full rounded border p-2"
-        >
-          <option value="">Select a meeting type</option>
-          <option value="testimony">Testimony</option>
-          <option value="regular">Regular</option>
-          <option value="stake">Stake</option>
-          <option value="general">General</option>
-        </select>
-
-        <div id="meetingType-error" aria-live="polite">
-          {state.errors?.meetingType?.map((error) => (
-            <p key={error} className="mt-1 text-sm text-red-600">
-              {error}
-            </p>
-          ))}
+          <Field id="conducting" label="Conducting" errors={state.errors?.conducting}>
+            <input
+              id="conducting"
+              name="conducting"
+              type="text"
+              required
+              aria-describedby="conducting-error"
+              className={inputStyles}
+            />
+          </Field>
         </div>
-      </div>
+      </FormSection>
 
-      {/* Presiding */}
-      <div>
-        <label htmlFor="presiding" className="block font-medium">
-          Presiding
-        </label>
-
-        <input
-          id="presiding"
-          name="presiding"
-          type="text"
-          required
-          aria-describedby="presiding-error"
-          className="mt-1 w-full rounded border p-2"
-        />
-
-        <div id="presiding-error" aria-live="polite">
-          {state.errors?.presiding?.map((error) => (
-            <p key={error} className="mt-1 text-sm text-red-600">
-              {error}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      {/* Conducting */}
-      <div>
-        <label htmlFor="conducting" className="block font-medium">
-          Conducting
-        </label>
-
-        <input
-          id="conducting"
-          name="conducting"
-          type="text"
-          required
-          aria-describedby="conducting-error"
-          className="mt-1 w-full rounded border p-2"
-        />
-
-        <div id="conducting-error" aria-live="polite">
-          {state.errors?.conducting?.map((error) => (
-            <p key={error} className="mt-1 text-sm text-red-600">
-              {error}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      {/* Announcements */}
-      <div>
-        <label htmlFor="announcements" className="block font-medium">
-          Announcements
-        </label>
-
-        <textarea
+      <FormSection title="Announcements">
+        <Field
           id="announcements"
-          name="announcements"
-          rows={3}
-          aria-describedby="announcements-error"
-          className="mt-1 w-full rounded border p-2"
-        />
-
-        <div id="announcements-error" aria-live="polite">
-          {state.errors?.announcements?.map((error) => (
-            <p key={error} className="mt-1 text-sm text-red-600">
-              {error}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      {/* Opening Hymn */}
-      <fieldset className="space-y-4 rounded border p-4">
-        <legend className="px-2 font-semibold">Opening Hymn</legend>
-
-        <div>
-          <label htmlFor="openingHymnNumber" className="block font-medium">
-            Hymn Number
-          </label>
-
-          <input
-            id="openingHymnNumber"
-            name="openingHymnNumber"
-            type="number"
-            min="1"
-            required
-            aria-describedby="openingHymnNumber-error"
-            className="mt-1 w-full rounded border p-2"
+          label="Announcements"
+          help="One announcement per line."
+          errors={state.errors?.announcements}
+        >
+          <textarea
+            id="announcements"
+            name="announcements"
+            rows={3}
+            aria-describedby="announcements-help announcements-error"
+            className={`${inputStyles} resize-y`}
           />
+        </Field>
+      </FormSection>
 
-          <div id="openingHymnNumber-error" aria-live="polite">
-            {state.errors?.openingHymnNumber?.map((error) => (
-              <p key={error} className="mt-1 text-sm text-red-600">
-                {error}
-              </p>
-            ))}
-          </div>
+      <FormSection title="Opening">
+        <div className="grid gap-5 sm:grid-cols-[8rem_1fr]">
+          <Field id="openingHymnNumber" label="Hymn Number" errors={state.errors?.openingHymnNumber}>
+            <input
+              id="openingHymnNumber"
+              name="openingHymnNumber"
+              type="number"
+              min="1"
+              required
+              aria-describedby="openingHymnNumber-error"
+              className={inputStyles}
+            />
+          </Field>
+
+          <Field id="openingHymnTitle" label="Hymn Title" errors={state.errors?.openingHymnTitle}>
+            <input
+              id="openingHymnTitle"
+              name="openingHymnTitle"
+              type="text"
+              required
+              aria-describedby="openingHymnTitle-error"
+              className={inputStyles}
+            />
+          </Field>
         </div>
 
-        <div>
-          <label htmlFor="openingHymnTitle" className="block font-medium">
-            Hymn Title
-          </label>
-
+        <Field id="openingPrayer" label="Opening Prayer" errors={state.errors?.openingPrayer}>
           <input
-            id="openingHymnTitle"
-            name="openingHymnTitle"
+            id="openingPrayer"
+            name="openingPrayer"
             type="text"
             required
-            aria-describedby="openingHymnTitle-error"
-            className="mt-1 w-full rounded border p-2"
+            aria-describedby="openingPrayer-error"
+            className={inputStyles}
           />
+        </Field>
+      </FormSection>
 
-          <div id="openingHymnTitle-error" aria-live="polite">
-            {state.errors?.openingHymnTitle?.map((error) => (
-              <p key={error} className="mt-1 text-sm text-red-600">
-                {error}
-              </p>
-            ))}
-          </div>
-        </div>
-      </fieldset>
-
-      {/* Opening Prayer */}
-      <div>
-        <label htmlFor="openingPrayer" className="block font-medium">
-          Opening Prayer
-        </label>
-
-        <input
-          id="openingPrayer"
-          name="openingPrayer"
-          type="text"
-          required
-          aria-describedby="openingPrayer-error"
-          className="mt-1 w-full rounded border p-2"
-        />
-
-        <div id="openingPrayer-error" aria-live="polite">
-          {state.errors?.openingPrayer?.map((error) => (
-            <p key={error} className="mt-1 text-sm text-red-600">
-              {error}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      {/* Ward Business */}
-      <div>
-        <label htmlFor="wardBusiness" className="block font-medium">
-          Ward Business
-        </label>
-
-        <textarea
+      <FormSection title="Ward Business">
+        <Field
           id="wardBusiness"
-          name="wardBusiness"
-          rows={3}
-          aria-describedby="wardBusiness-error"
-          className="mt-1 w-full rounded border p-2"
-        />
-
-        <div id="wardBusiness-error" aria-live="polite">
-          {state.errors?.wardBusiness?.map((error) => (
-            <p key={error} className="mt-1 text-sm text-red-600">
-              {error}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      {/* Stake Business */}
-      <div>
-        <label htmlFor="stakeBusiness" className="flex items-center gap-2">
-          <input
-            id="stakeBusiness"
-            name="stakeBusiness"
-            type="checkbox"
+          label="Ward Business"
+          help="One item per line."
+          errors={state.errors?.wardBusiness}
+        >
+          <textarea
+            id="wardBusiness"
+            name="wardBusiness"
+            rows={3}
+            aria-describedby="wardBusiness-help wardBusiness-error"
+            className={`${inputStyles} resize-y`}
           />
-          Stake Business
-        </label>
-
-        <div id="stakeBusiness-error" aria-live="polite">
-          {state.errors?.stakeBusiness?.map((error) => (
-            <p key={error} className="mt-1 text-sm text-red-600">
-              {error}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      {/* Sacrament Hymn */}
-      <fieldset className="space-y-4 rounded border p-4">
-        <legend className="px-2 font-semibold">Sacrament Hymn</legend>
+        </Field>
 
         <div>
-          <label htmlFor="sacramentHymnNumber" className="block font-medium">
-            Hymn Number
+          <label
+            htmlFor="stakeBusiness"
+            className="flex cursor-pointer items-center gap-3 rounded-xl border border-border bg-background px-4 py-3 text-sm font-medium text-sage-900"
+          >
+            <input
+              id="stakeBusiness"
+              name="stakeBusiness"
+              type="checkbox"
+              className="h-4 w-4 accent-sage-600"
+            />
+            Stake Business
           </label>
 
-          <input
-            id="sacramentHymnNumber"
-            name="sacramentHymnNumber"
-            type="number"
-            min="1"
-            required
-            aria-describedby="sacramentHymnNumber-error"
-            className="mt-1 w-full rounded border p-2"
-          />
-
-          <div id="sacramentHymnNumber-error" aria-live="polite">
-            {state.errors?.sacramentHymnNumber?.map((error) => (
-              <p key={error} className="mt-1 text-sm text-red-600">
-                {error}
-              </p>
-            ))}
-          </div>
+          <FieldErrors id="stakeBusiness" errors={state.errors?.stakeBusiness} />
         </div>
+      </FormSection>
 
-        <div>
-          <label htmlFor="sacramentHymnTitle" className="block font-medium">
-            Hymn Title
-          </label>
+      <FormSection title="Sacrament">
+        <div className="grid gap-5 sm:grid-cols-[8rem_1fr]">
+          <Field id="sacramentHymnNumber" label="Hymn Number" errors={state.errors?.sacramentHymnNumber}>
+            <input
+              id="sacramentHymnNumber"
+              name="sacramentHymnNumber"
+              type="number"
+              min="1"
+              required
+              aria-describedby="sacramentHymnNumber-error"
+              className={inputStyles}
+            />
+          </Field>
 
-          <input
-            id="sacramentHymnTitle"
-            name="sacramentHymnTitle"
-            type="text"
-            required
-            aria-describedby="sacramentHymnTitle-error"
-            className="mt-1 w-full rounded border p-2"
-          />
-
-          <div id="sacramentHymnTitle-error" aria-live="polite">
-            {state.errors?.sacramentHymnTitle?.map((error) => (
-              <p key={error} className="mt-1 text-sm text-red-600">
-                {error}
-              </p>
-            ))}
-          </div>
+          <Field id="sacramentHymnTitle" label="Hymn Title" errors={state.errors?.sacramentHymnTitle}>
+            <input
+              id="sacramentHymnTitle"
+              name="sacramentHymnTitle"
+              type="text"
+              required
+              aria-describedby="sacramentHymnTitle-error"
+              className={inputStyles}
+            />
+          </Field>
         </div>
-      </fieldset>
+      </FormSection>
 
-      {/* Speakers */}
-      <div>
-        <label htmlFor="speakers" className="block font-medium">
-          Speakers / Musical Numbers
-        </label>
-
-        <textarea
+      <FormSection title="Speakers & Musical Numbers">
+        <Field
           id="speakers"
-          name="speakers"
-          rows={5}
-          placeholder="Name|Topic|speaker"
-          aria-describedby="speakers-help speakers-error"
-          className="mt-1 w-full rounded border p-2"
-        />
-
-        <p id="speakers-help" className="mt-1 text-sm text-gray-600">
-          One per line. Use Name|Topic|speaker or
-          Name|Topic|musical-number.
-        </p>
-
-        <div id="speakers-error" aria-live="polite">
-          {state.errors?.speakers?.map((error) => (
-            <p key={error} className="mt-1 text-sm text-red-600">
-              {error}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      {/* Closing Hymn */}
-      <fieldset className="space-y-4 rounded border p-4">
-        <legend className="px-2 font-semibold">Closing Hymn</legend>
-
-        <div>
-          <label htmlFor="closingHymnNumber" className="block font-medium">
-            Hymn Number
-          </label>
-
-          <input
-            id="closingHymnNumber"
-            name="closingHymnNumber"
-            type="number"
-            min="1"
-            required
-            aria-describedby="closingHymnNumber-error"
-            className="mt-1 w-full rounded border p-2"
+          label="Speakers / Musical Numbers"
+          help="One per line. Use Name|Topic|speaker or Name|Topic|musical-number."
+          errors={state.errors?.speakers}
+        >
+          <textarea
+            id="speakers"
+            name="speakers"
+            rows={5}
+            placeholder="Name|Topic|speaker"
+            aria-describedby="speakers-help speakers-error"
+            className={`${inputStyles} resize-y`}
           />
+        </Field>
+      </FormSection>
 
-          <div id="closingHymnNumber-error" aria-live="polite">
-            {state.errors?.closingHymnNumber?.map((error) => (
-              <p key={error} className="mt-1 text-sm text-red-600">
-                {error}
-              </p>
-            ))}
-          </div>
+      <FormSection title="Closing">
+        <div className="grid gap-5 sm:grid-cols-[8rem_1fr]">
+          <Field id="closingHymnNumber" label="Hymn Number" errors={state.errors?.closingHymnNumber}>
+            <input
+              id="closingHymnNumber"
+              name="closingHymnNumber"
+              type="number"
+              min="1"
+              required
+              aria-describedby="closingHymnNumber-error"
+              className={inputStyles}
+            />
+          </Field>
+
+          <Field id="closingHymnTitle" label="Hymn Title" errors={state.errors?.closingHymnTitle}>
+            <input
+              id="closingHymnTitle"
+              name="closingHymnTitle"
+              type="text"
+              required
+              aria-describedby="closingHymnTitle-error"
+              className={inputStyles}
+            />
+          </Field>
         </div>
 
-        <div>
-          <label htmlFor="closingHymnTitle" className="block font-medium">
-            Hymn Title
-          </label>
-
+        <Field id="closingPrayer" label="Closing Prayer" errors={state.errors?.closingPrayer}>
           <input
-            id="closingHymnTitle"
-            name="closingHymnTitle"
+            id="closingPrayer"
+            name="closingPrayer"
             type="text"
             required
-            aria-describedby="closingHymnTitle-error"
-            className="mt-1 w-full rounded border p-2"
+            aria-describedby="closingPrayer-error"
+            className={inputStyles}
           />
+        </Field>
+      </FormSection>
 
-          <div id="closingHymnTitle-error" aria-live="polite">
-            {state.errors?.closingHymnTitle?.map((error) => (
-              <p key={error} className="mt-1 text-sm text-red-600">
-                {error}
-              </p>
-            ))}
-          </div>
-        </div>
-      </fieldset>
-
-      {/* Closing Prayer */}
-      <div>
-        <label htmlFor="closingPrayer" className="block font-medium">
-          Closing Prayer
-        </label>
-
-        <input
-          id="closingPrayer"
-          name="closingPrayer"
-          type="text"
-          required
-          aria-describedby="closingPrayer-error"
-          className="mt-1 w-full rounded border p-2"
-        />
-
-        <div id="closingPrayer-error" aria-live="polite">
-          {state.errors?.closingPrayer?.map((error) => (
-            <p key={error} className="mt-1 text-sm text-red-600">
-              {error}
-            </p>
-          ))}
-        </div>
-      </div>
-
-      {/* General message */}
       {state.message && (
-        <p className="text-sm text-red-600" aria-live="polite">
+        <p
+          className="rounded-xl border border-[#e6cbbf] bg-[#faeee8] px-4 py-3 text-sm text-[#9a4a3a]"
+          aria-live="polite"
+        >
           {state.message}
         </p>
       )}
 
-      {/* Submit */}
-      <button
-        type="submit"
-        disabled={isPending}
-        className="rounded bg-blue-600 px-4 py-2 font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {isPending ? 'Creating...' : 'Create Meeting'}
-      </button>
+      <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:items-center sm:justify-end">
+        <Link
+          href="/meetings"
+          className="rounded-full border border-sage-300 bg-surface px-6 py-3 text-center text-sm font-semibold text-sage-800 transition-colors hover:bg-sage-50"
+        >
+          Cancel
+        </Link>
+
+        <button
+          type="submit"
+          disabled={isPending}
+          className="rounded-full bg-sage-700 px-7 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sage-800 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {isPending ? 'Creating...' : 'Create Meeting'}
+        </button>
+      </div>
     </form>
   );
 }

@@ -4,7 +4,9 @@ import { signOutAction } from '@/lib/actions';
 
 
 
-export default async function AdminLayout({children,}: Readonly<{children: React.ReactNode;}>) {
+export default async function AdminLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   const session = await auth();
 
   if (!session?.user) {
@@ -13,18 +15,21 @@ export default async function AdminLayout({children,}: Readonly<{children: React
 
   return (
     <>
-      <header className="flex items-center justify-between border-b px-6 py-4">
-        <p className="font-semibold">Meeting Management</p>
+      <div className="mb-8 flex items-center justify-between gap-4 rounded-2xl border border-sage-200 bg-sage-50 px-5 py-3 print:hidden">
+        <div className="flex items-center gap-3">
+          <span aria-hidden="true" className="h-2 w-2 rounded-full bg-sage-500" />
+          <p className="text-sm font-medium text-sage-900">Meeting Management</p>
+        </div>
 
         <form action={signOutAction}>
           <button
             type="submit"
-            className="rounded-lg border px-4 py-2 font-semibold"
+            className="rounded-full border border-sage-300 bg-surface px-4 py-1.5 text-sm font-semibold text-sage-800 transition-colors hover:bg-sage-100"
           >
             Sign Out
           </button>
         </form>
-      </header>
+      </div>
 
       {children}
     </>

@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 
+
+
 export default function Error({
   error,
   reset,
@@ -15,26 +17,31 @@ export default function Error({
   }, [error]);
 
   return (
-    <section className="mx-auto mt-16 max-w-xl rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm">
-      <h1 className="text-2xl font-bold">Something went wrong!</h1>
+    <section className="mx-auto max-w-xl rounded-3xl border border-border bg-surface px-6 py-14 text-center shadow-sm">
+      <p className="text-sm font-medium uppercase tracking-widest text-[#9a4a3a]">
+        Something went wrong
+      </p>
+      <h1 className="mt-3 text-2xl font-semibold sm:text-3xl">
+        We couldn&apos;t load that page
+      </h1>
 
-      <p className="mt-3 text-gray-600">
+      <p className="mt-3 text-muted">
         We were unable to load or process the meeting information.
         Please try again.
       </p>
 
-      <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
         <button
           type="button"
           onClick={() => reset()}
-          className="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+          className="rounded-full bg-sage-700 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sage-800"
         >
           Try Again
         </button>
 
         <Link
           href="/meetings"
-          className="rounded-lg border border-gray-300 px-4 py-2 font-semibold hover:bg-gray-50"
+          className="rounded-full border border-sage-300 bg-surface px-6 py-2.5 text-sm font-semibold text-sage-800 transition-colors hover:bg-sage-50"
         >
           Back to Meetings
         </Link>

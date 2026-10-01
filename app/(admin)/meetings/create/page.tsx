@@ -10,12 +10,13 @@ export const metadata: Metadata = {
 
 export default function CreateMeetingPage() {
   return (
-    <section>
-      <h1 className="text-3xl font-bold">Create Meeting</h1>
-
-      <p className="mt-2 text-gray-600">
-        Create a new sacrament meeting program.
-      </p>
+    <section className="mx-auto max-w-3xl">
+      <header>
+        <h1 className="text-3xl font-semibold sm:text-4xl">Create Meeting</h1>
+        <p className="mt-2 text-muted">
+          Create a new sacrament meeting program.
+        </p>
+      </header>
 
       <CreateMeetingForm />
     </section>

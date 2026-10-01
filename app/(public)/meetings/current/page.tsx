@@ -1,6 +1,8 @@
 import { getMeetingByDate } from '@/lib/meetings-db';
 import { redirect } from 'next/navigation';
 
+export const dynamic = "force-dynamic";
+
 
 
 export default async function CurrentMeetingPage() {
@@ -10,7 +12,8 @@ export default async function CurrentMeetingPage() {
   const sunday = new Date(today);
   sunday.setDate(today.getDate() - dayOfWeek);
 
-  const date = sunday.toISOString().split('T')[0];
+  // en-CA formats as YYYY-MM-DD using the local date, not UTC
+  const date = sunday.toLocaleDateString('en-CA');
 
   const meeting = await getMeetingByDate(date);
 

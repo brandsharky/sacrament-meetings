@@ -3,17 +3,41 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/meetings", label: "Meetings" },
+  { href: "/meetings/current", label: "Current Meetings" },
+  { href: "/login", label: "Login", pushRight: true },
+];
 
 export default function NavLinks() {
   const pathname = usePathname();
 
   return (
-    <nav classaria-label="Main navigation" className="flex gap-6 print:hidden">
-      <Link href="/" className={pathname === '/' ? 'font-bold underline' : 'hover:underline'} aria-current={pathname === '/' ? 'page' : undefined}>Home</Link>
-      <Link href="/meetings" className={pathname === '/meetings' ? 'font-bold underline' : 'hover:underline'} aria-current={pathname === '/meetings' ? 'page' : undefined}>Meetings</Link>
-      <Link href="/meetings/current" className={pathname === '/meetings/current' ? 'font-bold underline' : 'hover:underline'} aria-current={pathname === '/meetings/current' ? 'page' : undefined}>Current Meetings</Link>
-      <Link href="/login" className={pathname === '/login' ? 'font-bold underline' : 'hover:underline'} aria-current={pathname === '/login' ? 'page' : undefined}>Login</Link>
+    <nav
+      aria-label="Main navigation"
+      className="-mx-1 flex items-center gap-1 overflow-x-auto px-1 pb-3 print:hidden"
+    >
+      {links.map(({ href, label, pushRight }) => {
+        const isActive = pathname === href;
+
+        return (
+          <Link
+            key={href}
+            href={href}
+            aria-current={isActive ? "page" : undefined}
+            className={`whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+              pushRight ? "ml-auto" : ""
+            } ${
+              isActive
+                ? "bg-sage-100 text-sage-900"
+                : "text-muted hover:bg-sage-50 hover:text-sage-800"
+            }`}
+          >
+            {label}
+          </Link>
+        );
+      })}
     </nav>
   );
 }
