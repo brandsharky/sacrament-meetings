@@ -8,7 +8,8 @@ export const authConfig = {
   },
 
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
+    authorized({ auth, request }) {
+      const { nextUrl } = request;
       const isLoggedIn = !!auth?.user;
 
       const isProtected =
@@ -20,7 +21,7 @@ export const authConfig = {
         return false;
       }
 
-      if (isLoggedIn && nextUrl.pathname === '/login') {
+      if (isLoggedIn && nextUrl.pathname === '/login' && request.method === 'GET') {
         return Response.redirect(new URL('/meetings', nextUrl));
       }
 

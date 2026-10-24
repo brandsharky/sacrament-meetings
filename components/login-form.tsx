@@ -16,6 +16,8 @@ export function LoginForm() {
 
   return (
     <form action={formAction} className="mt-8 space-y-5">
+      <input type="hidden" name="redirectTo" value="/meetings" />
+
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-sage-900">
           Email
