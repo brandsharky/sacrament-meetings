@@ -2,6 +2,7 @@ import Image from 'next/image';
 import MeetingCard from '@/components/MeetingCard';
 import { getMeetings, getMeetingsTotalPages } from '@/lib/meetings-db';
 import MeetingSearch from '@/components/MeetingSearch';
+import CreateMeetingButton from '@/components/CreateMeetingButton';
 import Pagination from '@/components/Pagination';
 import type { Metadata } from 'next';
 
@@ -36,11 +37,14 @@ export default async function MeetingsPage({
         className="h-48 w-full rounded-3xl object-cover object-[50%_25%] shadow-sm sm:h-64"
       />
 
-      <header className="mt-8">
-        <h1 className="text-3xl font-semibold sm:text-4xl">Sacrament Meetings</h1>
-        <p className="mt-2 text-muted">
-          View past and current sacrament meeting programs.
-        </p>
+      <header className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-3xl font-semibold sm:text-4xl">Sacrament Meetings</h1>
+          <p className="mt-2 text-muted">
+            View past and current sacrament meeting programs.
+          </p>
+        </div>
+        <CreateMeetingButton />
       </header>
 
       <div className="mt-6">
