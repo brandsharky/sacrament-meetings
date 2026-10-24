@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Open_Sans, Lora } from "next/font/google";
 import "./globals.css";
+import { auth } from '@/auth';
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -28,7 +29,9 @@ export const viewport: Viewport = {
   themeColor: "#faf6ee",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const session = await auth();
+
   return (
     <html lang="en">
       <body
@@ -44,7 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="sticky top-0 z-40 border-b border-border bg-surface/90 backdrop-blur print:hidden">
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
             <Header />
-            <NavLinks />
+            <NavLinks isLoggedIn={Boolean(session?.user)} />
           </div>
         </div>
 

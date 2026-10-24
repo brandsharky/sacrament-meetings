@@ -3,7 +3,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { signIn, signOut } from '@/auth';
+import { signIn, signOut, auth } from '@/auth';
 import { AuthError } from 'next-auth';
 
 import {
@@ -82,12 +82,15 @@ export async function authenticate(
 }
 
 export async function signOutAction() {
-  await signOut();
+  await signOut({ redirectTo: '/' });
 }
 
 
 
 export async function createMeeting(prevState: State, formData: FormData): Promise<State> {
+  const session = await auth();
+  if (!session?.user) redirect('/login');
+
   const raw = {
     date: formData.get('date'),
     meetingType: formData.get('meetingType'),
@@ -200,6 +203,9 @@ export async function updateMeeting(
   prevState: State,
   formData: FormData
 ): Promise<State> {
+  const session = await auth();
+  if (!session?.user) redirect('/login');
+
   const raw = {
     date: formData.get('date'),
     meetingType: formData.get('meetingType'),
@@ -321,6 +327,9 @@ export async function updateMeeting(
 
 
 export async function deleteMeeting(id: number): Promise<void> {
+  const session = await auth();
+  if (!session?.user) redirect('/login');
+
   try {
     const deleted = await deleteMeetingFromDatabase(id);
 
